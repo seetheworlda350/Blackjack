@@ -1,3 +1,3 @@
 # Blackjack
 
-From KennyYip video, [https://youtu.be/GMdgjaDdOjI](YouTube Video)
+From KennyYip video, [https://youtu.be/GMdgjaDdOjI] (YouTube Video)
