@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.util.Collections;
 
 public class Blackjack {
+    public static void main(String[] args) {
+        new Blackjack();
+    }
     private class Card{
         private String value;
         private String suit;
@@ -66,16 +69,23 @@ public class Blackjack {
 
 
             try{
-            //draw hidden card
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
-            g.drawImage(hiddenCardImg,20,20,cardWidth,cardHeight,null);
+                //draw hidden card
+                Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+                g.drawImage(hiddenCardImg,20,20,cardWidth,cardHeight,null);
 
-            //draw dealer's hand
-            for(int i = 0; i<dealerHand.size();i++){
-                Card card = dealerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
-                g.drawImage(cardImg,cardWidth+ 25,20,cardWidth,cardHeight,null);
-            }
+                //draw dealer's hand
+                for(int i = 0; i<dealerHand.size();i++){
+                    Card card = dealerHand.get(i);
+                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    g.drawImage(cardImg,cardWidth+ 25,20,cardWidth,cardHeight,null);
+                }
+
+                // Draw player's hand
+                for (int i = 0; i < playerHand.size(); i++) {
+                    Card card = playerHand.get(i);
+                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    g.drawImage(cardImg, 20 + (i * (cardWidth + 10)), boardHeight - cardHeight - 40, cardWidth, cardHeight, null);
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -86,26 +96,25 @@ public class Blackjack {
     JButton hitButton = new JButton("Hit");
     JButton stayButton = new JButton("Stay");
 
-    public Blackjack(){
+    public Blackjack() {
         startGame();
 
+        frame.setLayout(new BorderLayout()); // Set layout for the frame
         frame.setVisible(true);
-        frame.setSize(boardWidth,boardHeight);
+        frame.setSize(boardWidth, boardHeight + 100); // Add extra height for buttons
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        gamePanel.setLayout(new BorderLayout());
-        gamePanel.setBackground(new Color(53,101,77));
-        frame.add(gamePanel);
+        gamePanel.setLayout(null); // No layout for custom drawing
+        gamePanel.setBackground(new Color(53, 101, 77));
+        frame.add(gamePanel, BorderLayout.CENTER); // Add gamePanel to the center
 
         hitButton.setFocusable(false);
         buttonPanel.add(hitButton);
         stayButton.setFocusable(false);
         buttonPanel.add(stayButton);
-        frame.add(buttonPanel,BorderLayout.SOUTH);
-
-
+        frame.add(buttonPanel, BorderLayout.SOUTH); // Add buttonPanel to the bottom
     }
 
     public void startGame(){
