@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
-import javax.print.DocFlavor;
 import javax.swing.*;
 import java.util.Collections;
 
@@ -48,8 +47,36 @@ public class Blackjack {
     int playerSum;
     int playerAceCount;
 
+    //window
+    int boardWidth = 600;
+    int boardHeight = boardWidth;
+
+    JFrame frame = new JFrame("Blackjack");
+    JPanel gamePanel = new JPanel();
+    JPanel buttonPanel = new JPanel();
+    JButton hitButton = new JButton("Hit");
+    JButton stayButton = new JButton("Stay");
+
     public Blackjack(){
         startGame();
+
+        frame.setVisible(true);
+        frame.setSize(boardWidth,boardHeight);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        gamePanel.setLayout(new BorderLayout());
+        gamePanel.setBackground(new Color(53,101,77));
+        frame.add(gamePanel);
+
+        hitButton.setFocusable(false);
+        buttonPanel.add(hitButton);
+        stayButton.setFocusable(false);
+        buttonPanel.add(stayButton);
+        frame.add(buttonPanel,BorderLayout.SOUTH);
+
+
     }
 
     public void startGame(){
