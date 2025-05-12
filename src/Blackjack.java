@@ -68,6 +68,9 @@ public class Blackjack {
             try{
                 //draw hidden card
                 Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+                if(!stayButton.isEnabled()){
+                    hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
+                }
                 g.drawImage(hiddenCardImg,20,20,cardWidth,cardHeight,null);
 
                 //draw dealer's hand
@@ -82,6 +85,23 @@ public class Blackjack {
                     Card card = playerHand.get(i);
                     Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
                     g.drawImage(cardImg,20+(cardWidth + 5)*i,320,cardWidth,cardHeight,null);
+                }
+
+                if(!stayButton.isEnabled()){
+                    dealerSum = reduceDealerAce();
+                    playerSum = reducePlayerAce();
+                    System.out.println("STAY: ");
+                    System.out.println("DEALER: " + dealerSum);
+                    System.out.println("PLAYER: "+playerSum);
+
+                    String message = "TEST";
+
+                    //if statements to update message is WIN, LOSE, PUSH(DRAW or TIE) based on score
+
+                    g.setFont(new Font("Arial",Font.PLAIN,30));
+                    g.setColor(Color.white);
+                    g.drawString(message,220,250);
+
                 }
             }
             catch (Exception e){
@@ -112,7 +132,41 @@ public class Blackjack {
         buttonPanel.add(stayButton);
         frame.add(buttonPanel,BorderLayout.SOUTH);
 
+        hitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                Card card = deck.remove(deck.size()-1);
+                playerSum += card.getValue();
+                playerAceCount += card.isAce()? 1:0;
+                playerHand.add(card);
+                
+                // if the player hand value is over 21
+                // 1) they bust
+                // 2) if they have an ace, subtract 10
+                // check the above conditions and 
+                // if they are above 21, the do hitButton.setEnabled(false)
+                if(reducePlayerAce() > 21){
+                    hitButton.setEnabled(false);
+                }
+                
+                gamePanel.repaint();
+            }
+        });
 
+        stayButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                hitButton.setEnabled(false);
+                stayButton.setEnabled(false);
+
+                while(dealerSum < 17){
+                    Card card = deck.get(deck.size()-1);
+                    dealerSum += card.getValue();
+                    dealerAceCount += card.isAce()?1:0;
+                    dealerHand.add(card);
+                }
+                gamePanel.repaint();
+            }
+        });
+        gamePanel.repaint();
     }
 
     public void startGame(){
@@ -193,6 +247,22 @@ public class Blackjack {
         System.out.println("AFTER SHUFFLE");
         System.out.println(deck);
 
+    }
+
+    public int reducePlayerAce(){
+        while(playerSum > 21 && playerAceCount >0){
+            playerSum -= 10;
+            playerAceCount -=1;
+        }
+        return playerSum;
+    }
+
+    public int reduceDealerAce(){
+        while(dealerSum > 21 && dealerAceCount >0){
+            dealerSum -= 10;
+            dealerAceCount -=1;
+        }
+        return dealerSum;
     }
 
 }
