@@ -66,16 +66,23 @@ public class Blackjack {
 
 
             try{
-            //draw hidden card
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
-            g.drawImage(hiddenCardImg,20,20,cardWidth,cardHeight,null);
+                //draw hidden card
+                Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+                g.drawImage(hiddenCardImg,20,20,cardWidth,cardHeight,null);
 
-            //draw dealer's hand
-            for(int i = 0; i<dealerHand.size();i++){
-                Card card = dealerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
-                g.drawImage(cardImg,cardWidth+ 25,20,cardWidth,cardHeight,null);
-            }
+                //draw dealer's hand
+                for(int i = 0; i<dealerHand.size();i++){
+                    Card card = dealerHand.get(i);
+                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    g.drawImage(cardImg,cardWidth + 25 + (cardWidth + 5)*i,20,cardWidth,cardHeight,null);
+                }
+
+                //draw player's hand
+                for(int i = 0; i<playerHand.size();i++){
+                    Card card = playerHand.get(i);
+                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    g.drawImage(cardImg,20+(cardWidth + 5)*i,320,cardWidth,cardHeight,null);
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
